@@ -18,5 +18,28 @@ function getKnightMoves(x, y) {
 }
 
 function knightMoves(start, target) {
+   const queue = [[start, [start]]];
+   const visited = new Set([start.toString()]);
 
-}
+   while (queue.length > 0) {
+      const [currentPosition, path] = queue.shift();
+      const [cx, cy] = currentPosition;
+
+      if (cx === target[0] && cy === target[1]) {
+          return path;
+      }
+
+      for (const [nx, ny] of getKnightMoves(cx, cy)) {
+          const nextPosition = [nx, ny];
+          if (!visited.has(nextPosition.toString())) {
+              visited.add(nextPosition.toString());
+              queue.push([nextPosition, path.concat([nextPosition])]);
+          }
+      }
+  }
+};
+
+const path = knightMoves([3, 3], [4,3]);
+
+console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
+path.forEach(step => console.log(step));
